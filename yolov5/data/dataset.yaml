@@ -1,0 +1,6 @@
+train: data/images/train
+val: data/images/valid
+
+#Classes
+nc: 1   #number of classes
+names: ['pill']
