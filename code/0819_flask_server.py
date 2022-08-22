@@ -69,6 +69,9 @@ def search_pill():
         # 이미지에서 알약 영역을 자름
         img = detect.run_from_img_object(im0s=img, weights="../yolov5/runs/train/camera_web3/weights/best.pt", save_crop=True, nosave=True)
 
+        if img == None:
+            # TODO: 알약 인식된 게 없을 경우 처리 해주세요!
+
         # 이미지를 전처리
         img = processing_image(img, target=(200, 200))
 

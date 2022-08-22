@@ -78,6 +78,8 @@ def run(
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
 ):
+    cropImg = None  # detect 결과로 내보낼 이미지
+
     source = str(source)
     save_img = not nosave and not source.endswith('.txt')  # save inference images
     is_file = Path(source).suffix[1:] in (IMG_FORMATS + VID_FORMATS)
@@ -236,6 +238,7 @@ def run_from_img_object(
         half=False,  # use FP16 half-precision inference
         dnn=False,  # use OpenCV DNN for ONNX inference
 ):
+    cropImg = None  # detect 결과로 내보낼 이미지
 
     # Load model
     device = select_device(device)
