@@ -4,10 +4,8 @@
 # In[ ]:
 
 
-from flask import Flask, render_template, request, jsonify
-from PIL import Image
+from flask import Flask, make_response, request, jsonify
 import cv2
-import io
 import os
 import openpyxl
 
@@ -18,7 +16,6 @@ from yolov5 import detect
 
 from keras.models import load_model
 from keras.preprocessing import image
-from keras.applications import imagenet_utils
 import numpy as np
 
 app = Flask(__name__)
@@ -69,8 +66,10 @@ def search_pill():
         # 이미지에서 알약 영역을 자름
         img = detect.run_from_img_object(im0s=img, weights="../yolov5/runs/train/camera_web3/weights/best.pt", save_crop=True, nosave=True)
 
+        # 크롭된 알약 영역이 없을 시(인식된 알약이 없을 시)
         if img == None:
-            # TODO: 알약 인식된 게 없을 경우 처리 해주세요!
+            data["success"] = False
+            return make_response(jsonify(data), 400)
 
         # 이미지를 전처리
         img = processing_image(img, target=(200, 200))
@@ -91,11 +90,11 @@ def search_pill():
 
         # Json 데이터 반환
         return jsonify(data)
-    
+    # 이미지가 없을 시
     else:
         data["success"] = False
-        
-        return jsonify(data)
+
+        return make_response(jsonify(data), 404)
 
 
     
